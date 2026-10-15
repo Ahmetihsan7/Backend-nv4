@@ -1,16 +1,17 @@
+-- Fresh-install script for an empty Jamin database only.
+-- It never drops a database, table, or procedure. Do not run it against the
+-- existing laravel database or any database containing application data.
+CREATE DATABASE IF NOT EXISTS Jamin;
+USE Jamin;
+
 -- Step : 01
 /********************************************************************************
 -- Doel : Maak een nieuwe database aan heet Jamin.
 -- ******************************************************************************
 -- Versie     Datum          Auteur			Omschrijving
 -- ******     **********     **********		**************
--- 01         13-09-2026     KadhimH		Database Jamin is aangemaakt + gebruiken (DROP, CREATE, USE)   	 
-*********************************************************************************/ 
-
-DROP DATABASE IF EXISTS Jamin;
-CREATE DATABASE Jamin;
-USE Jamin;
-
+-- 01         13-09-2026     KadhimH		Veilige lege database-initialisatie
+*********************************************************************************/
 
 -- ==============================================================================
 -- DEEL 1: STAMTABELLEN (Alleen Primary Key, geen Foreign Keys)
@@ -26,10 +27,10 @@ USE Jamin;
 **********************************************************************************/ 
 CREATE TABLE Product 
 (
-     Id                  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+     Id                  TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
     ,Naam                VARCHAR(100) NOT NULL
-    ,Barcode             VARCHAR(20) NOT NULL
-    ,IsActief            BIT NOT NULL DEFAULT 1
+    ,Barcode             VARCHAR(13) NOT NULL
+    ,IsActief            TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking           VARCHAR(250) NULL DEFAULT NULL
     ,DatumAangemaakt     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,DatumGewijzigd      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -46,12 +47,12 @@ CREATE TABLE Product
 **********************************************************************************/ 
 CREATE TABLE Leverancier 
 (
-     Id                  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+     Id                  TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
     ,Naam                VARCHAR(100) NOT NULL
     ,ContactPersoon      VARCHAR(100) NOT NULL
     ,LeverancierNummer   VARCHAR(20) NOT NULL
-    ,Mobiel              VARCHAR(20) NOT NULL
-    ,IsActief            BIT NOT NULL DEFAULT 1
+    ,Mobiel              VARCHAR(15) NOT NULL
+    ,IsActief            TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking           VARCHAR(250) NULL DEFAULT NULL
     ,DatumAangemaakt     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,DatumGewijzigd      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -68,10 +69,10 @@ CREATE TABLE Leverancier
 **********************************************************************************/ 
 CREATE TABLE Allergeen 
 (
-     Id                  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+     Id                  TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
     ,Naam                VARCHAR(100) NOT NULL
-    ,Omschrijving        VARCHAR(255) NOT NULL
-    ,IsActief            BIT NOT NULL DEFAULT 1
+    ,Omschrijving        VARCHAR(250) NOT NULL
+    ,IsActief            TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking           VARCHAR(250) NULL DEFAULT NULL
     ,DatumAangemaakt     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,DatumGewijzigd      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -92,11 +93,11 @@ CREATE TABLE Allergeen
 **********************************************************************************/ 
 CREATE TABLE Magazijn 
 (
-     Id                  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
-    ,ProductId           INT UNSIGNED NOT NULL
-    ,VerpakkingsEenheid  DECIMAL(4,1) NOT NULL
-    ,AantalAanwezig      INT NULL DEFAULT NULL
-    ,IsActief            BIT NOT NULL DEFAULT 1
+     Id                  TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+    ,ProductId           TINYINT UNSIGNED NOT NULL
+    ,VerpakkingsEenheid  DECIMAL(8,3) NOT NULL
+    ,AantalAanwezig      INT UNSIGNED NULL DEFAULT NULL
+    ,IsActief            TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking           VARCHAR(250) NULL DEFAULT NULL
     ,DatumAangemaakt     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,DatumGewijzigd      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -114,10 +115,10 @@ CREATE TABLE Magazijn
 **********************************************************************************/ 
 CREATE TABLE ProductPerAllergeen 
 (
-     Id                  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
-    ,ProductId           INT UNSIGNED NOT NULL
-    ,AllergeenId         INT UNSIGNED NOT NULL
-    ,IsActief            BIT NOT NULL DEFAULT 1
+     Id                  TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+    ,ProductId           TINYINT UNSIGNED NOT NULL
+    ,AllergeenId         TINYINT UNSIGNED NOT NULL
+    ,IsActief            TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking           VARCHAR(250) NULL DEFAULT NULL
     ,DatumAangemaakt     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,DatumGewijzigd      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -136,13 +137,13 @@ CREATE TABLE ProductPerAllergeen
 **********************************************************************************/ 
 CREATE TABLE ProductPerLeverancier 
 (
-     Id                          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
-    ,LeverancierId               INT UNSIGNED NOT NULL
-    ,ProductId                   INT UNSIGNED NOT NULL
+     Id                          TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+    ,LeverancierId               TINYINT UNSIGNED NOT NULL
+    ,ProductId                   TINYINT UNSIGNED NOT NULL
     ,DatumLevering               DATE NOT NULL
-    ,Aantal                      INT NOT NULL
+    ,Aantal                      INT UNSIGNED NOT NULL
     ,DatumEerstVolgendeLevering  DATE NULL DEFAULT NULL
-    ,IsActief                    BIT NOT NULL DEFAULT 1
+    ,IsActief                    TINYINT(1) NOT NULL DEFAULT 1
     ,Opmerking                   VARCHAR(250) NULL DEFAULT NULL
     ,DatumAangemaakt             DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
     ,DatumGewijzigd              DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
@@ -182,7 +183,7 @@ VALUES (1, 'Mintnopjes', '8719587231278', 1, NULL, NOW(6), NOW(6))
       ,(7, 'Witte Muizen', '8719587328256', 1, NULL, NOW(6), NOW(6))
       ,(8, 'Reuzen Slangen', '8719587325641', 1, NULL, NOW(6), NOW(6))
       ,(9, 'Zoute Rijen', '8719587322739', 1, NULL, NOW(6), NOW(6))
-      ,(10, 'Winegums', '8719587327527', 1, NULL, NOW(6), NOW(6))
+      ,(10, 'Winegums', '8719587327527', 0, NULL, NOW(6), NOW(6))
       ,(11, 'Drop Munten', '8719587322345', 1, NULL, NOW(6), NOW(6))
       ,(12, 'Kruis Drop', '8719587322265', 1, NULL, NOW(6), NOW(6))
       ,(13, 'Zoute Ruitjes', '8719587323256', 1, NULL, NOW(6), NOW(6));
@@ -190,7 +191,7 @@ VALUES (1, 'Mintnopjes', '8719587231278', 1, NULL, NOW(6), NOW(6))
 
 -- Step : 04.2
 /*********************************************************************************
--- Doel : Voeg 5 rijen toe met INSERT aan tabel Leverancier
+-- Doel : Voeg 6 rijen toe met INSERT aan tabel Leverancier
 -- *******************************************************************************
 -- Versie     Datum          Auteur			Omschrijving
 -- ******     **********     **********		**************
@@ -212,7 +213,8 @@ VALUES (1, 'Venco', 'Bert van Linge', 'L1029384719', '06-28493827', 1, NULL, NOW
       ,(2, 'Astra Sweets', 'Jasper del Monte', 'L1029284315', '06-39398734', 1, NULL, NOW(6), NOW(6))
       ,(3, 'Haribo', 'Sven Stalman', 'L1029324748', '06-24383291', 1, NULL, NOW(6), NOW(6))
       ,(4, 'Basset', 'Joyce Stelterberg', 'L1023845773', '06-48293823', 1, NULL, NOW(6), NOW(6))
-      ,(5, 'De Bron', 'Remco Veenstra', 'L1023857736', '06-34291234', 1, NULL, NOW(6), NOW(6));
+      ,(5, 'De Bron', 'Remco Veenstra', 'L1023857736', '06-34291234', 1, NULL, NOW(6), NOW(6))
+      ,(6, 'Quality Street', 'Johan Nooij', 'L1029234586', '06-23458456', 1, NULL, NOW(6), NOW(6));
 
 
 -- Step : 04.3
@@ -344,3 +346,152 @@ VALUES (1, 1, 1, '2024-10-09', 23, '2024-10-16', 1, NULL, NOW(6), NOW(6))
       ,(15, 5, 11, '2024-10-19', 60, '2024-10-26', 1, NULL, NOW(6), NOW(6))
       ,(16, 5, 12, '2024-10-11', 45, NULL, 1, NULL, NOW(6), NOW(6))
       ,(17, 5, 13, '2024-10-12', 23, NULL, 1, NULL, NOW(6), NOW(6));
+
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_GetLeveranciersOverzicht()
+BEGIN
+    SELECT
+        l.Id,
+        l.Naam,
+        l.ContactPersoon,
+        l.LeverancierNummer,
+        l.Mobiel,
+        COUNT(DISTINCT pl.ProductId) AS AantalProducten
+    FROM Leverancier l
+    LEFT JOIN ProductPerLeverancier pl
+        ON pl.LeverancierId = l.Id
+    GROUP BY
+        l.Id,
+        l.Naam,
+        l.ContactPersoon,
+        l.LeverancierNummer,
+        l.Mobiel
+    ORDER BY AantalProducten DESC, l.Naam ASC;
+END$$
+
+CREATE PROCEDURE sp_GetGeleverdeProducten(IN p_leverancier_id INT)
+BEGIN
+    SELECT
+        p.Id AS ProductId,
+        p.Naam,
+        m.AantalAanwezig,
+        m.VerpakkingsEenheid,
+        MAX(pl.DatumLevering) AS LaatsteLevering
+    FROM ProductPerLeverancier pl
+    JOIN Product p
+        ON p.Id = pl.ProductId
+    LEFT JOIN Magazijn m
+        ON m.ProductId = p.Id
+    WHERE pl.LeverancierId = p_leverancier_id
+    GROUP BY
+        p.Id,
+        p.Naam,
+        m.AantalAanwezig,
+        m.VerpakkingsEenheid
+    ORDER BY m.AantalAanwezig DESC, p.Naam ASC;
+END$$
+
+CREATE PROCEDURE sp_RegistreerLevering(
+    IN p_leverancierId INT,
+    IN p_productId INT,
+    IN p_datumLevering DATE,
+    IN p_aantal INT UNSIGNED,
+    IN p_datumEerstVolgendeLevering DATE,
+    IN p_opmerking VARCHAR(250),
+    OUT p_result INT
+)
+proc: BEGIN
+    DECLARE v_magazijn_id INT UNSIGNED;
+    DECLARE v_huidige_voorraad INT UNSIGNED;
+    DECLARE v_is_actief BIT;
+    DECLARE v_relation_exists INT DEFAULT 0;
+    DECLARE v_duplicate_id INT DEFAULT NULL;
+
+    SET p_result = 0;
+
+    IF p_aantal IS NULL OR p_aantal < 1 THEN
+        SET p_result = 7;
+        LEAVE proc;
+    END IF;
+
+    SELECT COUNT(*) INTO v_relation_exists
+    FROM ProductPerLeverancier
+    WHERE LeverancierId = p_leverancierId
+      AND ProductId = p_productId;
+
+    IF v_relation_exists = 0 THEN
+        SET p_result = 2;
+        LEAVE proc;
+    END IF;
+
+    SET v_is_actief = (SELECT IsActief FROM Product WHERE Id = p_productId);
+
+    IF COALESCE(v_is_actief, 0) = 0 THEN
+        SET p_result = 3;
+        LEAVE proc;
+    END IF;
+
+    SET v_magazijn_id = NULL;
+    SET v_huidige_voorraad = NULL;
+
+    SELECT Id, AantalAanwezig INTO v_magazijn_id, v_huidige_voorraad
+    FROM Magazijn
+    WHERE ProductId = p_productId
+    FOR UPDATE;
+
+    IF v_magazijn_id IS NULL THEN
+        SET p_result = 4;
+        LEAVE proc;
+    END IF;
+
+    SELECT Id INTO v_duplicate_id
+    FROM ProductPerLeverancier
+    WHERE LeverancierId = p_leverancierId
+      AND ProductId = p_productId
+      AND DatumLevering = p_datumLevering
+    LIMIT 1
+    FOR UPDATE;
+
+    IF v_duplicate_id IS NOT NULL THEN
+        SET p_result = 5;
+        LEAVE proc;
+    END IF;
+
+    IF CAST(COALESCE(v_huidige_voorraad, 0) AS UNSIGNED) + p_aantal > 4294967295 THEN
+        SET p_result = 6;
+        LEAVE proc;
+    END IF;
+
+    UPDATE Magazijn
+    SET AantalAanwezig = COALESCE(v_huidige_voorraad, 0) + p_aantal,
+        DatumGewijzigd = NOW(6)
+    WHERE Id = v_magazijn_id;
+
+    INSERT INTO ProductPerLeverancier (
+        LeverancierId,
+        ProductId,
+        DatumLevering,
+        Aantal,
+        DatumEerstVolgendeLevering,
+        IsActief,
+        Opmerking,
+        DatumAangemaakt,
+        DatumGewijzigd
+    ) VALUES (
+        p_leverancierId,
+        p_productId,
+        p_datumLevering,
+        p_aantal,
+        p_datumEerstVolgendeLevering,
+        1,
+        p_opmerking,
+        NOW(6),
+        NOW(6)
+    );
+
+    SET p_result = 1;
+END proc$$
+
+DELIMITER ;
