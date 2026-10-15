@@ -8,6 +8,29 @@ use Tests\TestCase;
 
 class Be02ScenariosTest extends TestCase
 {
+    public function test_login_dashboard_and_warehouse_overview_still_render(): void
+    {
+        $this->requireMySqlDatabase();
+        $this->get(route('login'))
+            ->assertOk();
+
+        $this->actingAs(User::factory()->make())
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('Overzicht Magazijn Jamin')
+            ->assertSee('Overzicht Leveranciers');
+
+        $this->get(route('magazijn.index'))
+            ->assertOk()
+            ->assertSee('8719587231278')
+            ->assertSee('Mintnopjes')
+            ->assertSee('453')
+            ->assertSee('Allergenen Info')
+            ->assertSee('Leverantie Info')
+            ->assertSee(route('allergeen.show', 1), false)
+            ->assertSee(route('levering.show', 1), false);
+    }
+
     public function test_supplier_overview_lists_all_suppliers_including_quality_street(): void
     {
         $this->requireMySqlDatabase();
