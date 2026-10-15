@@ -190,7 +190,7 @@ VALUES (1, 'Mintnopjes', '8719587231278', 1, NULL, NOW(6), NOW(6))
 
 -- Step : 04.2
 /*********************************************************************************
--- Doel : Voeg 5 rijen toe met INSERT aan tabel Leverancier
+-- Doel : Voeg 6 rijen toe met INSERT aan tabel Leverancier
 -- *******************************************************************************
 -- Versie     Datum          Auteur			Omschrijving
 -- ******     **********     **********		**************
@@ -212,7 +212,8 @@ VALUES (1, 'Venco', 'Bert van Linge', 'L1029384719', '06-28493827', 1, NULL, NOW
       ,(2, 'Astra Sweets', 'Jasper del Monte', 'L1029284315', '06-39398734', 1, NULL, NOW(6), NOW(6))
       ,(3, 'Haribo', 'Sven Stalman', 'L1029324748', '06-24383291', 1, NULL, NOW(6), NOW(6))
       ,(4, 'Basset', 'Joyce Stelterberg', 'L1023845773', '06-48293823', 1, NULL, NOW(6), NOW(6))
-      ,(5, 'De Bron', 'Remco Veenstra', 'L1023857736', '06-34291234', 1, NULL, NOW(6), NOW(6));
+      ,(5, 'De Bron', 'Remco Veenstra', 'L1023857736', '06-34291234', 1, NULL, NOW(6), NOW(6))
+      ,(6, 'Quality Street', 'Johan Nooij', 'L1029234586', '06-23458456', 1, NULL, NOW(6), NOW(6));
 
 
 -- Step : 04.3
