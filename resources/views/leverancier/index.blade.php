@@ -37,6 +37,8 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                <x-nav-buttons :back="route('dashboard')" />
             </div>
         </div>
     </div>

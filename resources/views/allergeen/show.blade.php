@@ -54,6 +54,8 @@
                     </script>
                 @endif
 
+                <x-nav-buttons :back="route('magazijn.index')" />
+
             </div>
         </div>
     </div>

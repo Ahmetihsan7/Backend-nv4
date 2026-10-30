@@ -47,14 +47,14 @@
                             <label for="aantal" class="block text-sm font-medium text-gray-700">Aantal producteenheden</label>
                             <input id="aantal" name="aantal" type="number" min="1" max="4294967295" step="1" required
                                 value="{{ old('aantal') }}"
-                                class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none">
+                                class="mt-1 block w-[250px] max-w-full rounded border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none">
                         </div>
 
                         <div>
                             <label for="datum_eerst_volgende_levering" class="block text-sm font-medium text-gray-700">Datum eerstvolgende levering</label>
                             <input id="datum_eerst_volgende_levering" name="datum_eerst_volgende_levering" type="date" min="{{ $datumLevering }}" required
                                 value="{{ old('datum_eerst_volgende_levering') }}"
-                                class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none">
+                                class="mt-1 block w-[250px] max-w-full rounded border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none">
                         </div>
                     </div>
 
@@ -62,12 +62,7 @@
                         <button type="submit" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
                             Sla op
                         </button>
-                        <a href="{{ route('leverancier.producten', $leverancier->Id) }}" class="inline-block bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded">
-                            Terug
-                        </a>
-                        <a href="{{ route('dashboard') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
-                            Home
-                        </a>
+                        <x-nav-buttons :back="route('leverancier.producten', $leverancier->Id)" wrapper-class="contents" />
                     </div>
                 </form>
             </div>

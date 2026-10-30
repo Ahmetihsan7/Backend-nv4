@@ -13,18 +13,18 @@
                     <p>Mobiel: {{ $leverancier->Mobiel }}</p>
                 </div>
 
-                @if ($heeftProducten)
-                    <table class="w-full border-collapse border border-black text-left text-base mb-6">
-                        <thead>
-                            <tr>
-                                <th class="border border-black p-2 font-normal">Naam product</th>
-                                <th class="border border-black p-2 font-normal">Aantal in Magazijn</th>
-                                <th class="border border-black p-2 font-normal">VerpakkingsEenheid</th>
-                                <th class="border border-black p-2 font-normal">Laatste levering</th>
-                                <th class="border border-black p-2 text-center font-normal">Nieuwe levering</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <table class="w-full border-collapse border border-black text-left text-base mb-6">
+                    <thead>
+                        <tr>
+                            <th class="border border-black p-2 font-normal">Naam product</th>
+                            <th class="border border-black p-2 font-normal">Aantal in magazijn</th>
+                            <th class="border border-black p-2 font-normal">Verpakkingseenheid</th>
+                            <th class="border border-black p-2 font-normal">Laatste levering</th>
+                            <th class="border border-black p-2 text-center font-normal">Nieuwe levering</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ($heeftProducten)
                             @foreach ($producten as $product)
                                 <tr>
                                     <td class="border border-black p-2">{{ $product->Naam }}</td>
@@ -41,33 +41,25 @@
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody>
-                    </table>
-                @else
-                    <table class="w-full border-collapse border border-black text-center text-base mb-4">
-                        <tbody>
+                        @else
                             <tr>
-                                <td class="border border-black p-6">
+                                <td colspan="5" class="border border-black p-6 text-center">
                                     {{ $melding }}
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
+                        @endif
+                    </tbody>
+                </table>
+
+                @unless ($heeftProducten)
                     <script>
                         setTimeout(function() {
                             window.location.href = "{{ route('leverancier.index') }}";
                         }, 3000);
                     </script>
-                @endif
+                @endunless
 
-                <div class="flex gap-4 mt-6">
-                    <a href="{{ route('leverancier.index') }}" class="inline-block bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded">
-                        Terug
-                    </a>
-                    <a href="{{ route('dashboard') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
-                        Home
-                    </a>
-                </div>
+                <x-nav-buttons :back="route('leverancier.index')" />
             </div>
         </div>
     </div>
